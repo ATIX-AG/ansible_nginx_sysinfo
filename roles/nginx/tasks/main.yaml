@@ -1,0 +1,54 @@
+---
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: no
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+
+- name: Add epel-repository for CentOS
+  become: true
+  yum:
+    name: epel-release
+    state: present
+  when: ansible_distribution == 'CentOS'
+
+- name: Set www root for CentOS
+  set_fact:
+    nginx_www_root: "/usr/share/nginx/html/"
+  when: ansible_distribution == 'CentOS'
+
+- name: Install nginx
+  become: true
+  package:
+    name: "{{ nginx_package_name }}"
+    state: present
+
+- name: Start service and make it persistent
+  become: true
+  service:
+    name: "{{ nginx_service_name }}"
+    state: started
+    enabled: true
+
+- name: create default page
+  become: true
+  template:
+    src: index.html.j2
+    dest: "{{ nginx_www_root }}/index.html"
+  register: indexfile
+
+- name: copy css
+  become: true
+  copy:
+    src: stylesheet.css
+    dest: "{{ nginx_www_root }}/stylesheet.css"
+
+- name: restart nginx
+  become: true
+  service: 
+    name: "{{ nginx_service_name }}"
+    state: restarted
+  when: indexfile.changed
+...
