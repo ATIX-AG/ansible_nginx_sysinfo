@@ -1,11 +1,20 @@
 ---
-- name: Update and upgrade apt packages
+- name: Gather facts
+  setup:
+
+- name: Install aptitude if Debian
   become: true
-  apt:
-    upgrade: no
-    update_cache: yes
-    cache_valid_time: 86400 #One day
-  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+  package:
+    name: aptitude
+    state: present
+  when: ansible_os_family == 'Debian'
+
+
+- name: Update all packages
+  become: true
+  package:
+    name: '*'
+    state: latest
 
 - name: Add epel-repository for CentOS
   become: true
@@ -14,41 +23,42 @@
     state: present
   when: ansible_distribution == 'CentOS'
 
-- name: Set www root for CentOS
-  set_fact:
-    nginx_www_root: "/usr/share/nginx/html/"
-  when: ansible_distribution == 'CentOS'
-
-- name: Install nginx
+- name: Install required packages
   become: true
   package:
-    name: "{{ nginx_package_name }}"
+    name: "{{ packages }}"
     state: present
 
-- name: Start service and make it persistent
+- name: Start nginx service and make it persistent
   become: true
   service:
     name: "{{ nginx_service_name }}"
     state: started
     enabled: true
 
+- name: Set www root for nginx
+  set_fact:
+    nginx_www_root: "{{ nginx_www_root[ansible_os_family] }}"
+
+- name: debug
+  debug:
+    var: nginx_www_root
+
+
+
+
 - name: create default page
   become: true
   template:
     src: index.html.j2
     dest: "{{ nginx_www_root }}/index.html"
-  register: indexfile
+    validate: tidy %s
+  notify: restart nginx
 
 - name: copy css
   become: true
   copy:
     src: stylesheet.css
     dest: "{{ nginx_www_root }}/stylesheet.css"
-
-- name: restart nginx
-  become: true
-  service: 
-    name: "{{ nginx_service_name }}"
-    state: restarted
-  when: indexfile.changed
+  notify: restart nginx
 ...

@@ -2,3 +2,4 @@
 *.retry
 *.pyc
 __pycache__
+./*.retry
