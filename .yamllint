@@ -17,17 +17,17 @@ rules:
     level: error
   comments: disable
   comments-indentation: disable
-  document-start: disable
+  document-start: enable
   empty-lines:
     max: 3
     level: error
   hyphens:
     level: error
-  indentation: disable
+  indentation: {spaces: 2, indent-sequences: consistent}
   key-duplicates: enable
   line-length: disable
   new-line-at-end-of-file: disable
   new-lines:
     type: unix
   trailing-spaces: disable
-  truthy: disable
+  truthy: enable
