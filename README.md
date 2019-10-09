@@ -11,6 +11,5 @@ accesses the role for provisioning the boxes.
 vagrant up
 ```
 
-will start four VMs (VirtualBox required) running CentOS, Ubuntu 16.04, 
-Ubuntu 18.04 and Debian 9. A portmapping to ports 8081 - 8084 makes
+will start four libvirt Vagrantboxes running CentOS7, Ubuntu 18.04 and Debian 9. A portmapping to ports 8081 - 8084 makes
 the installed nginx accessible from the host.
