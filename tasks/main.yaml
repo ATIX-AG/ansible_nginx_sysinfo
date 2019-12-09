@@ -1,0 +1,64 @@
+---
+- name: Gather facts
+  setup:
+
+- name: Install aptitude if Debian
+  become: true
+  package:
+    name: aptitude
+    state: present
+  when: ansible_os_family == 'Debian'
+
+
+- name: Update all packages
+  become: true
+  package:
+    name: '*'
+    state: latest
+
+- name: Add epel-repository for CentOS
+  become: true
+  yum:
+    name: epel-release
+    state: present
+  when: ansible_distribution == 'CentOS'
+
+- name: Install required packages
+  become: true
+  package:
+    name: "{{ packages }}"
+    state: present
+
+- name: Start nginx service and make it persistent
+  become: true
+  service:
+    name: "{{ nginx_service_name }}"
+    state: started
+    enabled: true
+
+- name: Set www root for nginx
+  set_fact:
+    nginx_www_root: "{{ nginx_www_root[ansible_os_family] }}"
+
+- name: debug
+  debug:
+    var: nginx_www_root
+
+
+
+
+- name: create default page
+  become: true
+  template:
+    src: index.html.j2
+    dest: "{{ nginx_www_root }}/index.html"
+    validate: tidy %s
+  notify: restart nginx
+
+- name: copy css
+  become: true
+  copy:
+    src: stylesheet.css
+    dest: "{{ nginx_www_root }}/stylesheet.css"
+  notify: restart nginx
+...

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Information page: FILL HOSTNAME </title>
+<style type="text/css">@import url(PATH TO YOUR CSS FILE) all;</style>
+</head>
+<body>
+<h1>Information about running host</h1>
+
+<table>
+  <tr> <th colspan='2'>OS Facts</th> </tr>
+  <tr> <td>This system is running on</td> <td>{{ ansible_distribution }}</td> </tr>
+  ADD MORE LINES LIKE THE PREVIOUS ONE WITH OS FACTS
+</table>
+
+<table style='float:left;margin-right:50px'>
+  ADD A TABLE FOR NETWORK FACTS
+</table>
+
+
+<table>
+  ADD A TABLE FOR ENV VALUES
+  TO LOOP A DICT IN JINJA USE SOMETHING LIKE THIS;
+  {% for key, value in a_dictionary.iteritems() %}
+  <tr> <td>{{ key }}</td><td>{{ value }}</td> </tr>
+  {% endfor %}
+</table>
+
+</body>
+</html>
