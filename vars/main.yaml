@@ -2,7 +2,6 @@
 nginx_package_name: nginx
 nginx_service_name: nginx
 nginx_www_root:
-  #Ubuntu: "/usr/share/nginx/html/"
   Debian: "/var/www/html/"
   RedHat: "/usr/share/nginx/html/"
 

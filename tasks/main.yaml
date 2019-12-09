@@ -1,21 +1,4 @@
 ---
-- name: Gather facts
-  setup:
-
-- name: Install aptitude if Debian
-  become: true
-  package:
-    name: aptitude
-    state: present
-  when: ansible_os_family == 'Debian'
-
-
-- name: Update all packages
-  become: true
-  package:
-    name: '*'
-    state: latest
-
 - name: Add epel-repository for CentOS
   become: true
   yum:
@@ -39,13 +22,6 @@
 - name: Set www root for nginx
   set_fact:
     nginx_www_root: "{{ nginx_www_root[ansible_os_family] }}"
-
-- name: debug
-  debug:
-    var: nginx_www_root
-
-
-
 
 - name: create default page
   become: true
