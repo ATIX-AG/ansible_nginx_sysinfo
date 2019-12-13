@@ -1,1 +1,4 @@
 /.vagrant/*
+*.retry
+*.pyc
+__pycache__
