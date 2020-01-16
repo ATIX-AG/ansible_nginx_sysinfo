@@ -14,8 +14,8 @@ platforms:
       - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  - name: debian
-    image: debian:9
+  - name: debian10
+    image: debian:10
 provisioner:
   name: ansible
   lint:

@@ -7,6 +7,7 @@
 <body>
 <h1>Information about running host</h1>
 
+{% if scenario == "basic" %}
 <table>
   <tr> <th colspan='2'>OS Facts</th> </tr>
   <tr> <td>This system is running on</td> <td>{{ ansible_distribution }}</td> </tr>
@@ -18,6 +19,7 @@
   <tr> <td>Python Version</td> <td>{{ ansible_python_version }}</td> </tr>
 </table>
 
+{% if scenario == "full" %}
 <table style='float:left;margin-right:50px'>
   <tr> <th colspan='2'>Network information</th> </tr>
   <tr> <td>Hostname</td> <td>{{ ansible_nodename }}</td> </tr>
@@ -40,6 +42,8 @@
   <tr> <td>{{ key }}</td><td>{{ value }}</td> </tr>
   {% endfor %}
 </table>
+{% endif %}
+{% endif %}
 
 </body>
 </html>
