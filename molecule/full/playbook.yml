@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   vars:
-    scenario: "full"
+    full_info: true
   roles:
     - role: nginx_sysinfo

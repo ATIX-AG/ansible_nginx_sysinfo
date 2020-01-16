@@ -7,42 +7,39 @@
 <body>
 <h1>Information about running host</h1>
 
-{% if scenario == "basic" %}
-<table>
-  <tr> <th colspan='2'>OS Facts</th> </tr>
-  <tr> <td>This system is running on</td> <td>{{ ansible_distribution }}</td> </tr>
-  <tr> <td>Version:</td> <td>{{ ansible_distribution_version }}</td> </tr>
-  <tr> <td>OS Family:</td> <td>{{ ansible_os_family}}</td> </tr>
-  <tr> <td>Used package manager:</td> <td>{{ ansible_pkg_mgr }}</td> </tr>
-  <tr> <td>AppArmor</td> <td>{{ ansible_apparmor['status'] }}</td> </tr>
-  <tr> <td>Selinux</td> <td>{{ ansible_selinux['status'] }}</td> </tr>
-  <tr> <td>Python Version</td> <td>{{ ansible_python_version }}</td> </tr>
-</table>
-
-{% if scenario == "full" %}
 <table style='float:left;margin-right:50px'>
   <tr> <th colspan='2'>Network information</th> </tr>
   <tr> <td>Hostname</td> <td>{{ ansible_nodename }}</td> </tr>
   <tr> <td>IPv4 addresses</td> <td>{{ ", ".join(ansible_all_ipv4_addresses) }}</td> </tr>
   <tr> <td>IPv6 addresses</td> <td>{{ ", ".join(ansible_all_ipv6_addresses) }}</td> </tr>
-  {% for key, value in ansible_default_ipv4.iteritems() %}
+  {% for key, value in ansible_default_ipv4.items() %}
   <tr> <td>Default IPv4 interface -- {{ key }}</td> <td>{{ value }}</td> </tr>
   {% endfor %}
-  {% for key, value in ansible_default_ipv6.iteritems() %}
+  {% for key, value in ansible_default_ipv6.items() %}
   <tr> <td>Default IPv6 interface -- {{ key }}</td> <td>{{ value }}</td> </tr>
   {% endfor %}
   <tr> <td>Hostname</td> <td>{{ ansible_hostname }}</td> </tr>
   <tr> <td>FQDN</td> <td>{{ ansible_fqdn }}</td> </tr>
 </table>
 
+{% if full_info %}
+<table>
+  <tr> <th colspan='2'>OS Facts</th> </tr>
+  <tr> <td>This system is running on</td> <td>{{ ansible_distribution }}</td> </tr>
+  <tr> <td>Version</td> <td>{{ ansible_distribution_version }}</td> </tr>
+  <tr> <td>OS Family</td> <td>{{ ansible_os_family}}</td> </tr>
+  <tr> <td>Used package manager</td> <td>{{ ansible_pkg_mgr }}</td> </tr>
+  <tr> <td>AppArmor</td> <td>{{ ansible_apparmor['status'] }}</td> </tr>
+  <tr> <td>Selinux</td> <td>{{ ansible_selinux['status'] }}</td> </tr>
+  <tr> <td>Python Version</td> <td>{{ ansible_python_version }}</td> </tr>
+</table>
 
 <table>
   <tr> <th colspan='2'>Environment variables</th> </tr>
-  {% for key, value in ansible_env.iteritems() %}
+  {% for key, value in ansible_env.items() %}
   <tr> <td>{{ key }}</td><td>{{ value }}</td> </tr>
   {% endfor %}
 </table>
-{% endif %}
 {% endif %}
 
 </body>
