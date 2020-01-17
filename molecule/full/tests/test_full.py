@@ -7,9 +7,25 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 ).get_hosts('all')
 
 
-def test_hosts_file(host):
-    f = host.file('/etc/hosts')
+def test_nginx_is_installed(host):
+    nginx = host.package("nginx")
+    assert nginx.is_installed
 
-    assert f.exists
-    assert f.user == 'root'
-    assert f.group == 'root'
+
+def test_nginx_running_and_enabled(host):
+    nginx = host.service("nginx")
+    assert nginx.is_running
+    assert nginx.is_enabled
+
+
+def test_nginx_listening_http(host):
+    socket = host.socket('tcp://0.0.0.0:80')
+    assert socket.is_listening
+
+
+def test_nginx_serving_content(host):
+    assert host.addr("localhost").port(80).is_reachable
+    result = host.check_output("curl localhost:80")
+    assert "IPv4 addresses" in result
+    assert "AppArmor" in result
+    assert "Environment variables" in result

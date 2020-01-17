@@ -1,7 +1,9 @@
 ---
-- hosts: all
+- name: Prepare
+  hosts: all
   tasks:
-    - name: "Install httpie (for testing purposes)"
+    - name: Install curl
+      become: true
       package:
-        name: httpie
+        name: curl
 ...
