@@ -21,11 +21,3 @@ def test_nginx_running_and_enabled(host):
 def test_nginx_listening_http(host):
     socket = host.socket('tcp://0.0.0.0:80')
     assert socket.is_listening
-
-
-def test_nginx_serving_content(host):
-    assert host.addr("localhost").port(80).is_reachable
-    result = host.check_output("curl localhost:80")
-    assert "IPv4 addresses" in result
-    assert "AppArmor" not in result
-    assert "Environment Variables" not in result
