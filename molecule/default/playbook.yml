@@ -1,7 +1,5 @@
 ---
 - name: Converge
   hosts: all
-  vars:
-    scenario: "basic"
   roles:
     - role: nginx_sysinfo
