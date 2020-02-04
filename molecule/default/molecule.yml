@@ -6,16 +6,16 @@ driver:
 lint:
   name: yamllint
 platforms:
- - name: centos7
-   image: centos:7
-   command: /sbin/init
-   tmpfs:
-    - /run
-    - /tmp
-   volumes:
-    - /sys/fs/cgroup:/sys/fs/cgroup:ro
- - name: debian10
-   image: debian:10
+  - name: centos7
+    image: centos:7
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: debian10
+    image: debian:10
 provisioner:
   name: ansible
   lint:
